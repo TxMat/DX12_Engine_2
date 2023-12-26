@@ -138,7 +138,7 @@ private:
 
 struct Vertex
 {
-	XMFLOAT3 Pos;
-	XMFLOAT4 Color;
+	DirectX::XMFLOAT3 Pos;
+	DirectX::XMFLOAT4 Color;
 };
 

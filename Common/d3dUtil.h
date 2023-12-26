@@ -126,6 +126,8 @@ public:
 		const D3D_SHADER_MACRO* defines,
 		const std::string& entrypoint,
 		const std::string& target);
+	
+    static HRESULT CompileShader2(const wchar_t* filename, const char* entryPoint, const char* target, ID3DBlob** shaderBlob);
 };
 
 class DxException

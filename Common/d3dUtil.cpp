@@ -113,6 +113,48 @@ ComPtr<ID3DBlob> d3dUtil::CompileShader(
 	return byteCode;
 }
 
+// Compile shader function
+HRESULT d3dUtil::CompileShader2(
+	const wchar_t* filename,
+	const char* entryPoint,
+	const char* target,
+	ID3DBlob** shaderBlob)
+{
+	DWORD shaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
+
+#if defined(DEBUG) || defined(_DEBUG)
+	shaderFlags |= D3DCOMPILE_DEBUG;
+	shaderFlags |= D3DCOMPILE_SKIP_OPTIMIZATION;
+#endif
+
+	ID3DBlob* errorBlob = nullptr;
+	HRESULT hr = D3DCompileFromFile(
+		filename,
+		nullptr,
+		D3D_COMPILE_STANDARD_FILE_INCLUDE,
+		entryPoint,
+		target,
+		shaderFlags,
+		0,
+		shaderBlob,
+		&errorBlob);
+
+	if (FAILED(hr)) {
+		if (errorBlob) {
+			OutputDebugStringA(static_cast<const char*>(errorBlob->GetBufferPointer()));
+			errorBlob->Release();
+		}
+		return hr;
+	}
+
+	if (errorBlob) {
+		errorBlob->Release();
+	}
+
+	return S_OK;
+}
+
+
 std::wstring DxException::ToString()const
 {
     // Get the string description of the error code.

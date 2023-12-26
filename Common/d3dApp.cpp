@@ -687,6 +687,13 @@ void D3DApp::BuildShadersAndInputLayout()
 	mvsByteCode = d3dUtil::CompileShader(L"Shader\\basic.hlsl", nullptr, "VS", "vs_5_0");
 	mpsByteCode = d3dUtil::CompileShader(L"Shader\\basic.hlsl", nullptr, "PS", "ps_5_0");
 
+	// Usage example
+	ID3DBlob* vertexShaderBlob = nullptr;
+	ID3DBlob* pixelShaderBlob = nullptr;
+
+	d3dUtil::CompileShader2(L"VS.hlsl", "main", "vs_5_0", &vertexShaderBlob);
+	d3dUtil::CompileShader2(L"PS.hlsl", "main", "ps_5_0", &pixelShaderBlob);
+
 	mInputLayout =
 	{
 		{ "SV_POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },

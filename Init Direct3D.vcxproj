@@ -144,7 +144,6 @@
     <ClCompile Include="Common\d3dUtil.cpp" />
     <ClCompile Include="Common\GameTimer.cpp" />
     <ClCompile Include="InitDirect3DApp.cpp" />
-    <ClCompile Include="Shader\theshaderodalltime.hlsl" />
     <ClCompile Include="Shader\wtf_ps.hlsl">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
