@@ -74,6 +74,7 @@ protected:
 
 private:
 	void BuildShadersAndInputLayout();
+	void BuildTriangleGeometry();
 
 protected:
 
@@ -134,6 +135,8 @@ private:
 	Microsoft::WRL::ComPtr<ID3DBlob> mpsByteCode = nullptr;
 
 	std::vector<D3D12_INPUT_ELEMENT_DESC> mInputLayout;
+
+	std::unique_ptr<MeshGeometry> mTriangleGeo = nullptr;
 };
 
 struct Vertex

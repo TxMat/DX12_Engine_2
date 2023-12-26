@@ -115,6 +115,9 @@ bool D3DApp::Initialize()
     // Do the initial resize code.
     OnResize();
 
+	BuildShadersAndInputLayout();
+	BuildTriangleGeometry();
+
 	return true;
 }
  
@@ -699,4 +702,49 @@ void D3DApp::BuildShadersAndInputLayout()
 		{ "SV_POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
 	};
+}
+
+void D3DApp::BuildTriangleGeometry()
+{
+	std::array<Vertex, 3> vertices =
+	{
+		Vertex({ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT4(Colors::Black) }),
+		Vertex({ XMFLOAT3(+1.0f, +1.0f, +1.0f), XMFLOAT4(Colors::Black) }),
+		Vertex({ XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT4(Colors::Red) })
+	};
+
+	std::array<std::uint16_t, 3> indices =
+	{
+		0, 1, 2,
+	};
+
+	const UINT vbByteSize = (UINT)vertices.size() * sizeof(Vertex);
+	const UINT ibByteSize = (UINT)indices.size() * sizeof(std::uint16_t);
+
+	mTriangleGeo = std::make_unique<MeshGeometry>();
+	mTriangleGeo->Name = "TriangleGeo";
+
+	ThrowIfFailed(D3DCreateBlob(vbByteSize, &mTriangleGeo->VertexBufferCPU));
+	CopyMemory(mTriangleGeo->VertexBufferCPU->GetBufferPointer(), vertices.data(), vbByteSize);
+
+	ThrowIfFailed(D3DCreateBlob(ibByteSize, &mTriangleGeo->IndexBufferCPU));
+	CopyMemory(mTriangleGeo->IndexBufferCPU->GetBufferPointer(), indices.data(), ibByteSize);
+
+	mTriangleGeo->VertexBufferGPU = d3dUtil::CreateDefaultBuffer(md3dDevice.Get(),
+		mCommandList.Get(), vertices.data(), vbByteSize, mTriangleGeo->VertexBufferUploader);
+
+	mTriangleGeo->IndexBufferGPU = d3dUtil::CreateDefaultBuffer(md3dDevice.Get(),
+		mCommandList.Get(), indices.data(), ibByteSize, mTriangleGeo->IndexBufferUploader);
+
+	mTriangleGeo->VertexByteStride = sizeof(Vertex);
+	mTriangleGeo->VertexBufferByteSize = vbByteSize;
+	mTriangleGeo->IndexFormat = DXGI_FORMAT_R16_UINT;
+	mTriangleGeo->IndexBufferByteSize = ibByteSize;
+
+	SubmeshGeometry submesh;
+	submesh.IndexCount = (UINT)indices.size();
+	submesh.StartIndexLocation = 0;
+	submesh.BaseVertexLocation = 0;
+
+	mTriangleGeo->DrawArgs["triangle"] = submesh;
 }
