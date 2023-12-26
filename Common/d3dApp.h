@@ -130,8 +130,8 @@ protected:
 
 private:
 
-	ComPtr<ID3DBlob> mvsByteCode = nullptr;
-	ComPtr<ID3DBlob> mpsByteCode = nullptr;
+	Microsoft::WRL::ComPtr<ID3DBlob> mvsByteCode = nullptr;
+	Microsoft::WRL::ComPtr<ID3DBlob> mpsByteCode = nullptr;
 
 	std::vector<D3D12_INPUT_ELEMENT_DESC> mInputLayout;
 };
