@@ -73,7 +73,8 @@ void InitDirect3DApp::OnResize()
 
 void InitDirect3DApp::Update(const GameTimer& gt)
 {
-
+	// float test = gt.DeltaTime();
+	// printf("%f\n", test);
 }
 
 void InitDirect3DApp::Draw(const GameTimer& gt)
