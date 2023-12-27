@@ -81,7 +81,8 @@ private:
 	void BuildRootSignature();
 	void BuildShadersAndInputLayout();
 	void BuildTriangleGeometry();
-	void BuildPSO();
+    void BuildBoxGeometry();
+    void BuildPSO();
 
 protected:
 
@@ -112,8 +113,9 @@ protected:
     Microsoft::WRL::ComPtr<ID3D12CommandQueue> mCommandQueue;
     Microsoft::WRL::ComPtr<ID3D12CommandAllocator> mDirectCmdListAlloc;
     Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> mCommandList;
+    std::unique_ptr<MeshGeometry> mBoxGeo;
 
-	static const int SwapChainBufferCount = 2;
+    static const int SwapChainBufferCount = 2;
 	int mCurrBackBuffer = 0;
     Microsoft::WRL::ComPtr<ID3D12Resource> mSwapChainBuffer[SwapChainBufferCount];
     Microsoft::WRL::ComPtr<ID3D12Resource> mDepthStencilBuffer;

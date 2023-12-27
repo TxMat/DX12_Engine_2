@@ -96,44 +96,71 @@ void InitDirect3DApp::Draw(const GameTimer& gt)
     mCommandList->RSSetScissorRects(1, &mScissorRect);
 
     // Clear the back buffer and depth buffer.
-	mCommandList->ClearRenderTargetView(CurrentBackBufferView(), Colors::IndianRed, 0, nullptr);
+	mCommandList->ClearRenderTargetView(CurrentBackBufferView(), Colors::Aqua, 0, nullptr);
 	mCommandList->ClearDepthStencilView(DepthStencilView(), D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
 	
     // Specify the buffers we are going to render to.
 	mCommandList->OMSetRenderTargets(1, &CurrentBackBufferView(), true, &DepthStencilView());
 
-	// Do once
+
+	//////
 	ID3D12DescriptorHeap* descriptorHeaps[] = { mCbvHeap.Get() };
 	mCommandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
-
 	mCommandList->SetGraphicsRootSignature(mRootSignature.Get());
 
-	// Pass
-	// mCommandList->SetGraphicsRootConstantBufferView(1, mPassCB->Resource()->GetGPUVirtualAddress());
-
-	// Pipeline
-	mCommandList->SetPipelineState(mPSO.Get());
-
-	// Topology
+	mCommandList->IASetVertexBuffers(0, 1, &mTriangleGeo->VertexBufferView());
+	mCommandList->IASetIndexBuffer(&mTriangleGeo->IndexBufferView());
 	mCommandList->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    
+	mCommandList->SetGraphicsRootDescriptorTable(0, mCbvHeap->GetGPUDescriptorHandleForHeapStart());
 
+	mCommandList->DrawIndexedInstanced(
+		mTriangleGeo->DrawArgs["triangl"].IndexCount, 
+		1, 0, 0, 0);
+
+	mCommandList->IASetVertexBuffers(0, 1, &mBoxGeo->VertexBufferView());
+	mCommandList->IASetIndexBuffer(&mBoxGeo->IndexBufferView());
+	mCommandList->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    
+	mCommandList->SetGraphicsRootDescriptorTable(0, mCbvHeap->GetGPUDescriptorHandleForHeapStart());
+
+	mCommandList->DrawIndexedInstanced(
+		mBoxGeo->DrawArgs["box"].IndexCount, 
+		1, 0, 0, 0);
+	//////
 	
-	D3D12_VERTEX_BUFFER_VIEW vbv = mTriangleGeo->VertexBufferView();
-	D3D12_INDEX_BUFFER_VIEW ibv = mTriangleGeo->IndexBufferView();
-	mCommandList->IASetVertexBuffers(0, 1, &vbv);
-	mCommandList->IASetIndexBuffer(&ibv);
-	
-	// if ( m_iRootTexture!=-1 && pTexture )
-	// 	pList->SetGraphicsRootDescriptorTable(m_iRootTexture, pTexture->GetGPU());
+	// // Do once
+	// ID3D12DescriptorHeap* descriptorHeaps[] = { mCbvHeap.Get() };
+	// mCommandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
 	//
-	// if ( m_iRootTexture2!=-1 && pTexture2 )
-	// 	pList->SetGraphicsRootDescriptorTable(m_iRootTexture2, pTexture2->GetGPU());
-
-	//int index = SGraphics::I()->GetCbObjectIndex();
-	//mCommandList->SetGraphicsRootConstantBufferView(0, mCbObjects[index]->Resource()->GetGPUVirtualAddress());
-	mCommandList->DrawIndexedInstanced(mTriangleGeo->DrawArgs["triangle"].IndexCount, 1, 0, 0, 0);
-
-	
+	// mCommandList->SetGraphicsRootSignature(mRootSignature.Get());
+	//
+	// // Pass
+	// // mCommandList->SetGraphicsRootConstantBufferView(1, mPassCB->Resource()->GetGPUVirtualAddress());
+	//
+	// // Pipeline
+	// mCommandList->SetPipelineState(mPSO.Get());
+	//
+	// // Topology
+	// mCommandList->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	//
+	//
+	// D3D12_VERTEX_BUFFER_VIEW vbv = mTriangleGeo->VertexBufferView();
+	// D3D12_INDEX_BUFFER_VIEW ibv = mTriangleGeo->IndexBufferView();
+	// mCommandList->IASetVertexBuffers(0, 1, &vbv);
+	// mCommandList->IASetIndexBuffer(&ibv);
+	//
+	// // if ( m_iRootTexture!=-1 && pTexture )
+	// // 	pList->SetGraphicsRootDescriptorTable(m_iRootTexture, pTexture->GetGPU());
+	// //
+	// // if ( m_iRootTexture2!=-1 && pTexture2 )
+	// // 	pList->SetGraphicsRootDescriptorTable(m_iRootTexture2, pTexture2->GetGPU());
+	//
+	// //int index = SGraphics::I()->GetCbObjectIndex();
+	// //mCommandList->SetGraphicsRootConstantBufferView(0, mCbObjects[index]->Resource()->GetGPUVirtualAddress());
+	// mCommandList->DrawIndexedInstanced(mTriangleGeo->DrawArgs["triangle"].IndexCount, 1, 0, 0, 0);
+	//
+	//
 	
     // Indicate a state transition on the resource usage.
 	mCommandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(CurrentBackBuffer(),
