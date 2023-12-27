@@ -81,6 +81,7 @@ private:
 	void BuildRootSignature();
 	void BuildShadersAndInputLayout();
 	void BuildTriangleGeometry();
+	void BuildPSO();
 
 protected:
 
@@ -148,6 +149,8 @@ private:
 	std::vector<D3D12_INPUT_ELEMENT_DESC> mInputLayout;
 
 	std::unique_ptr<MeshGeometry> mTriangleGeo = nullptr;
+
+	Microsoft::WRL::ComPtr<ID3D12PipelineState> mPSO = nullptr;
 };
 
 struct Vertex
