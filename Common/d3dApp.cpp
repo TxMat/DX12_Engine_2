@@ -116,12 +116,23 @@ bool D3DApp::Initialize()
     // Do the initial resize code.
     OnResize();
 
+	// Reset the command list to prep for initialization commands.
+	ThrowIfFailed(mCommandList->Reset(mDirectCmdListAlloc.Get(), nullptr));
+
 	BuildDescriptorHeaps();
 	BuildConstantBuffers();
 	BuildRootSignature();
 	BuildShadersAndInputLayout();
 	BuildTriangleGeometry();
 	BuildPSO();
+
+	// Execute the initialization commands.
+	ThrowIfFailed(mCommandList->Close());
+	ID3D12CommandList* cmdsLists[] = { mCommandList.Get() };
+	mCommandQueue->ExecuteCommandLists(_countof(cmdsLists), cmdsLists);
+
+	// Wait until initialization is complete.
+	FlushCommandQueue();
 
 	return true;
 }
@@ -764,13 +775,6 @@ void D3DApp::BuildShadersAndInputLayout()
 
 	mvsByteCode = d3dUtil::CompileShader(L"Shader\\basic.hlsl", nullptr, "VS", "vs_5_0");
 	mpsByteCode = d3dUtil::CompileShader(L"Shader\\basic.hlsl", nullptr, "PS", "ps_5_0");
-
-	// Usage example
-	ID3DBlob* vertexShaderBlob = nullptr;
-	ID3DBlob* pixelShaderBlob = nullptr;
-
-	d3dUtil::CompileShader2(L"Shader\\wtf_vs.hlsl", "main", "vs_5_0", &vertexShaderBlob);
-	d3dUtil::CompileShader2(L"Shader\\wtf_ps.hlsl", "main", "ps_5_0", &pixelShaderBlob);
 
 	mInputLayout =
 	{

@@ -163,3 +163,25 @@ struct ObjectConstants
 {
 	DirectX::XMFLOAT4X4 WorldViewProj = MathHelper::Identity4x4();
 };
+
+struct Transform
+{
+	XMVECTOR vSca;
+	XMMATRIX mSca;
+
+	XMVECTOR vDir;
+	XMVECTOR vRight;
+	XMVECTOR vUp;
+
+	XMVECTOR qRot;
+	XMMATRIX mRot;
+
+	XMVECTOR vPos;
+
+	XMMATRIX matrix;
+
+	void Identity()
+	{
+		
+	}
+};
