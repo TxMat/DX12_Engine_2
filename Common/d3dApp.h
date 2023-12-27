@@ -196,4 +196,10 @@ struct Transform
 
 		matrix = DirectX::XMMatrixIdentity();
 	}
+
+	void Rotate(float yaw, float pitch, float roll)
+	{
+		qRot = DirectX::XMQuaternionRotationRollPitchYaw(pitch, yaw, roll);
+		mRot = DirectX::XMMatrixRotationQuaternion(qRot);
+	}
 };
