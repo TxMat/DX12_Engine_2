@@ -1,11 +1,13 @@
+// #include <DirectXMath.h>
+//
 // // PS.hlsl
 // struct PixelInput
 // {
-//     float4 Position : SV_POSITION;
-//     float4 Color : COLOR;
+//     DirectX::XMFLOAT4 Position;
+//     DirectX::XMFLOAT4 Color;
 // };
 //
-// float4 main(PixelInput input) : SV_TARGET
+// DirectX::XMFLOAT4 main(const PixelInput& input)
 // {
 //     return input.Color;
 // }

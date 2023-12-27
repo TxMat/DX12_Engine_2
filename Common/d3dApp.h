@@ -11,12 +11,14 @@
 
 #include "d3dUtil.h"
 #include "GameTimer.h"
-#include "../../Common/UploadBuffer.h"
+#include "UploadBuffer.h"
 
 // Link necessary d3d12 libraries.
 #pragma comment(lib,"d3dcompiler.lib")
 #pragma comment(lib, "D3D12.lib")
 #pragma comment(lib, "dxgi.lib")
+
+struct ObjectConstants;
 
 class D3DApp
 {
@@ -156,5 +158,5 @@ struct Vertex
 
 struct ObjectConstants
 {
-	XMFLOAT4X4 WorldViewProj = MathHelper::Identity4x4();
+	DirectX::XMFLOAT4X4 WorldViewProj = MathHelper::Identity4x4();
 };

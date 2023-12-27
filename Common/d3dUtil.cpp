@@ -2,6 +2,7 @@
 #include "d3dUtil.h"
 #include <comdef.h>
 #include <fstream>
+#include <d3dcompiler.h>
 
 using Microsoft::WRL::ComPtr;
 

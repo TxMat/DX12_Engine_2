@@ -1,20 +1,22 @@
+// #include <DirectXMath.h>
+//
 // // VS.hlsl
 // struct VertexInput
 // {
-//     float3 Position : POSITION;
-//     float4 Color : COLOR;
+//     DirectX::XMFLOAT3 Position;
+//     DirectX::XMFLOAT4 Color;
 // };
 //
 // struct VertexOutput
 // {
-//     float4 Position : SV_POSITION;
-//     float4 Color : COLOR;
+//     DirectX::XMFLOAT4 Position;
+//     DirectX::XMFLOAT4 Color;
 // };
 //
 // VertexOutput main(VertexInput input)
 // {
 //     VertexOutput output;
-//     output.Position = float4(input.Position, 1.0f);
+//     output.Position = DirectX::XMFLOAT4(input.Position.x, input.Position.y, input.Position.z, 1.0f);
 //     output.Color = input.Color;
 //     return output;
 // }

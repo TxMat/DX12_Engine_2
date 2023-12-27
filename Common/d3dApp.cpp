@@ -4,7 +4,7 @@
 
 #include "d3dApp.h"
 #include <WindowsX.h>
-#include "../../Common/UploadBuffer.h"
+#include "UploadBuffer.h"
 
 using Microsoft::WRL::ComPtr;
 using namespace std;
@@ -768,8 +768,8 @@ void D3DApp::BuildShadersAndInputLayout()
 	ID3DBlob* vertexShaderBlob = nullptr;
 	ID3DBlob* pixelShaderBlob = nullptr;
 
-	d3dUtil::CompileShader2(L"VS.hlsl", "main", "vs_5_0", &vertexShaderBlob);
-	d3dUtil::CompileShader2(L"PS.hlsl", "main", "ps_5_0", &pixelShaderBlob);
+	d3dUtil::CompileShader2(L"Shader\\wtf_vs.hlsl", "main", "vs_5_0", &vertexShaderBlob);
+	d3dUtil::CompileShader2(L"Shader\\wtf_ps.hlsl", "main", "ps_5_0", &pixelShaderBlob);
 
 	mInputLayout =
 	{
