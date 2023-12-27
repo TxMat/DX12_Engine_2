@@ -166,22 +166,34 @@ struct ObjectConstants
 
 struct Transform
 {
-	XMVECTOR vSca;
-	XMMATRIX mSca;
+	DirectX::XMVECTOR vSca;
+	DirectX::XMMATRIX mSca;
 
-	XMVECTOR vDir;
-	XMVECTOR vRight;
-	XMVECTOR vUp;
+	DirectX::XMVECTOR vDir;
+	DirectX::XMVECTOR vRight;
+	DirectX::XMVECTOR vUp;
 
-	XMVECTOR qRot;
-	XMMATRIX mRot;
+	DirectX::XMVECTOR qRot;
+	DirectX::XMMATRIX mRot;
 
-	XMVECTOR vPos;
+	DirectX::XMVECTOR vPos;
 
-	XMMATRIX matrix;
+	DirectX::XMMATRIX matrix;
 
 	void Identity()
 	{
-		
+		vSca = DirectX::XMVectorSet(1.0f, 1.0f, 1.0f, 0.0f);
+		mSca = DirectX::XMMatrixIdentity();
+
+		vDir = DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+		vRight = DirectX::XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
+		vUp = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+
+		qRot = DirectX::XMQuaternionIdentity();
+		mRot = DirectX::XMMatrixIdentity();
+
+		vPos = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+		matrix = DirectX::XMMatrixIdentity();
 	}
 };
