@@ -136,7 +136,7 @@ protected:
 	int mClientWidth = 800;
 	int mClientHeight = 600;
 
-private:
+protected:
 
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> mRootSignature = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> mCbvHeap = nullptr;

@@ -101,6 +101,39 @@ void InitDirect3DApp::Draw(const GameTimer& gt)
 	
     // Specify the buffers we are going to render to.
 	mCommandList->OMSetRenderTargets(1, &CurrentBackBufferView(), true, &DepthStencilView());
+
+	// Do once
+	ID3D12DescriptorHeap* descriptorHeaps[] = { mCbvHeap.Get() };
+	mCommandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
+
+	mCommandList->SetGraphicsRootSignature(mRootSignature.Get());
+
+	// Pass
+	// mCommandList->SetGraphicsRootConstantBufferView(1, mPassCB->Resource()->GetGPUVirtualAddress());
+
+	// Pipeline
+	mCommandList->SetPipelineState(mPSO.Get());
+
+	// Topology
+	mCommandList->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	
+	D3D12_VERTEX_BUFFER_VIEW vbv = mTriangleGeo->VertexBufferView();
+	D3D12_INDEX_BUFFER_VIEW ibv = mTriangleGeo->IndexBufferView();
+	mCommandList->IASetVertexBuffers(0, 1, &vbv);
+	mCommandList->IASetIndexBuffer(&ibv);
+	
+	// if ( m_iRootTexture!=-1 && pTexture )
+	// 	pList->SetGraphicsRootDescriptorTable(m_iRootTexture, pTexture->GetGPU());
+	//
+	// if ( m_iRootTexture2!=-1 && pTexture2 )
+	// 	pList->SetGraphicsRootDescriptorTable(m_iRootTexture2, pTexture2->GetGPU());
+
+	//int index = SGraphics::I()->GetCbObjectIndex();
+	//mCommandList->SetGraphicsRootConstantBufferView(0, mCbObjects[index]->Resource()->GetGPUVirtualAddress());
+	mCommandList->DrawIndexedInstanced(mTriangleGeo->DrawArgs["triangle"].IndexCount, 1, 0, 0, 0);
+
+	
 	
     // Indicate a state transition on the resource usage.
 	mCommandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(CurrentBackBuffer(),
