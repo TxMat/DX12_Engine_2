@@ -118,7 +118,7 @@ bool D3DApp::Initialize()
 
 	BuildDescriptorHeaps();
 	BuildConstantBuffers();
-	// TODO
+	BuildRootSignature();
 	BuildShadersAndInputLayout();
 	BuildTriangleGeometry();
 
