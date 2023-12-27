@@ -11,6 +11,7 @@
 
 #include "d3dUtil.h"
 #include "GameTimer.h"
+#include "../../Common/UploadBuffer.h"
 
 // Link necessary d3d12 libraries.
 #pragma comment(lib,"d3dcompiler.lib")
@@ -74,6 +75,8 @@ protected:
 
 private:
 	void BuildDescriptorHeaps();
+	void BuildConstantBuffers();
+	void BuildRootSignature();
 	void BuildShadersAndInputLayout();
 	void BuildTriangleGeometry();
 
@@ -131,7 +134,11 @@ protected:
 	int mClientHeight = 600;
 
 private:
+
+	Microsoft::WRL::ComPtr<ID3D12RootSignature> mRootSignature = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> mCbvHeap = nullptr;
+
+	std::unique_ptr<UploadBuffer<ObjectConstants>> mObjectCB = nullptr;
 
 	Microsoft::WRL::ComPtr<ID3DBlob> mvsByteCode = nullptr;
 	Microsoft::WRL::ComPtr<ID3DBlob> mpsByteCode = nullptr;
@@ -147,3 +154,7 @@ struct Vertex
 	DirectX::XMFLOAT4 Color;
 };
 
+struct ObjectConstants
+{
+	XMFLOAT4X4 WorldViewProj = MathHelper::Identity4x4();
+};
