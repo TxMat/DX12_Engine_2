@@ -73,6 +73,7 @@ protected:
     void LogOutputDisplayModes(IDXGIOutput* output, DXGI_FORMAT format);
 
 private:
+	void BuildDescriptorHeaps();
 	void BuildShadersAndInputLayout();
 	void BuildTriangleGeometry();
 
@@ -130,6 +131,7 @@ protected:
 	int mClientHeight = 600;
 
 private:
+	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> mCbvHeap = nullptr;
 
 	Microsoft::WRL::ComPtr<ID3DBlob> mvsByteCode = nullptr;
 	Microsoft::WRL::ComPtr<ID3DBlob> mpsByteCode = nullptr;
